@@ -1,13 +1,16 @@
 {
-  "name": "LeapZikMaker",
+  "name": "leapzikmaker",
   "version": "0.0.0",
   "description": "Projet étudiant 2016 a l'Ecole Multimedia WebApp musical",
   "main": "main.js",
   "scripts": {
-    "dev": "node_modules/.bin/webpack-dev-server --watch --hot --inline --colors -d",
-    "build": "node_modules/.bin/webpack --production"
+    "dev": "webpack-dev-server --watch --hot --inline --colors -d",
+    "build": "webpack --production"
   },
-  "author": "Victor Moutton <victor.moutton@gmail.com>,Clément Teboul <teboul.clement@gmail.com>",
+  "contributors": [
+    "Victor Moutton <victor.moutton@gmail.com>",
+    "Clément Teboul <teboul.clement@gmail.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.18.2",
@@ -18,5 +21,14 @@
     "jshint-loader": "^0.8.3",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VictorSheep/LeapZik.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VictorSheep/LeapZik/issues"
+  },
+  "homepage": "https://github.com/VictorSheep/LeapZik#readme"
 }
