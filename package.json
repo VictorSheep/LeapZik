@@ -19,10 +19,13 @@
     "extract-loader": "^0.1.0",
     "jshint": "^2.9.4",
     "jshint-loader": "^0.8.3",
+    "leapjs": "^0.6.4",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "leapjs": "^0.6.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VictorSheep/LeapZik.git"
