@@ -13,7 +13,7 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 
 		let leapPoint = hand.stabilizedPalmPosition;
 		let coord = coordTo2d(frame,leapPoint);
-		
+
 		drawCircle(ctx,coord,40,'black');
 
 		hand.fingers.forEach((finger) => {
@@ -36,12 +36,19 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 		});
 	
 	});
-})
+});
 
 controller.on("gesture", (gesture,frame) => {
+    let handIds = gesture.handIds;
+    let fingersId = gesture.pointableIds;
+    let hand;
+    handIds.forEach((handId)=>{
+    	hand = frame.hand(handId);
+    });
     switch (gesture.type){
         case "keyTap":
-    		console.log("keyTap");
+        	soundManager.playKick();
+    		console.log("keyTap",hand.type,hand.finger(fingersId));
             break;
         case "swipe":
     		console.log('swipe');
