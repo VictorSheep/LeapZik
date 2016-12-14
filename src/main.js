@@ -3,11 +3,15 @@ import Leap from 'leapjs';
 import * as leap_plugin from 'leapjs-plugins';
 import * as canvas from './canvas';
 import {coordTo2d,drawCircle} from './utils';
+import onGesture from './gesture';
 
 let ctx = canvas.getCtx();
 
 let controller = Leap.loop({enableGestures: true}, (frame)=>{
+	
 	canvas.clear();
+
+	let lastHandCoord;
 
 	frame.hands.forEach((hand) => {
 
@@ -15,6 +19,15 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 		let coord = coordTo2d(frame,leapPoint);
 
 		drawCircle(ctx,coord,40,'black');
+
+		if (typeof lastHandCoord === 'object' && Math.abs(coord.x-lastHandCoord.x)<500){ 
+			frame.gestures.push(
+				{
+					type : 'nearPalm',
+					distance : Math.abs(coord.x-lastHandCoord.x)
+				}
+			);
+		}
 
 		hand.fingers.forEach((finger) => {
 			ctx.beginPath();
@@ -34,25 +47,12 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 			});
 					
 		});
-	
-	});
-});
 
-controller.on("gesture", (gesture,frame) => {
-    let handIds = gesture.handIds;
-    let fingersId = gesture.pointableIds;
-    let hand;
-    handIds.forEach((handId)=>{
-    	hand = frame.hand(handId);
-    });
-    switch (gesture.type){
-        case "keyTap":
-        	soundManager.playKick();
-    		console.log("keyTap",hand.type,hand.finger(fingersId));
-            break;
-        case "swipe":
-    		console.log('swipe');
-        break;
-    }
+		lastHandCoord = coord;
+	});
+
+  if(frame.valid && frame.gestures.length > 0){
+  	onGesture(frame);
+  }	
 
 });
