@@ -1,57 +1,57 @@
-var kick = WaveSurfer.create({
-    container: '#waveform',
-	waveColor: 'red',
-	progressColor: 'purple'
-});
+import BufferLoader from './BufferLoader.class';
 
-var snare = WaveSurfer.create({
-    container: '#waveform',
-	waveColor: 'red',
-	progressColor: 'purple'
-});
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+let context = new AudioContext();
 
-snare.load('assets/audio/snare01.wav');
+let bufferLoader;
+let sample = {
+	right	: [],
+	left	: []
+};
 
+window.onload = loadSet('aqua');
 
-export function playKick(){
-	
-kick.load('assets/audio/kick01.wav');
+function loadSet(set){
+	let samplesPathList = [];
+	for (var i = 0; i < 8; i++) {
+		samplesPathList[i] = 'assets/audio/'+set+''+i+'.wav';
+	}
+	bufferLoader = new BufferLoader(
+		context,
+		samplesPathList,
+		finishedLoading
+	);
 
-kick.on('ready', function(){
-		if (kick.isPlaying()) kick.stop();
-		kick.play();
-});
+	bufferLoader.load();
 }
 
-/*snare.on('ready', function(){
-let snare01 = document.getElementById('snare01');
-	snare01.addEventListener('click',function(){
-		if (snare.isPlaying()) snare.stop();
-		snare.play();
-	});
-});*/
-/*
-wavesurfer.loadBlob('assets/audio');
-var filter = wavesurfer.backend.ac.createBiquadFilter();
-	filter.gain.value= 0;
-	filter.Q.value = 2;
-	//filter.frequency.value = 300;
+function finishedLoading(bufferList) {
+	// Create multiple sources and play them both together.
+	let source;
+	for (let i = bufferList.length - 1; i >= 0; i--) {
+		source = context.createBufferSource();
+		source.buffer = bufferList[i];
+		source.connect(context.destination);
+		if (i<3) sample.left[i] = source;
+		else sample.right[i-4] = source;
+	}
 
-wavesurfer.backend.setFilter(filter);
+	playSample('left',0);
+}
 
-wavesurfer.on('ready', function(){
-	let kick01 = document.getElementById('kick01');
-	kick01.addEventListener('click',function(){
-		wavesurfer.load('assets/audio/kick01.wav');
-		wavesurfer.play();
-		//filter.frequency.value -=400;
-	});
+function playSample(hand,finger){
+	switch(hand)
+	{
+		case 'left':
+			sample.left[finger].start(0);
+			break;
+		case 'right':
+			sample.right[finger].start(0);
+			break;
+	}
+}
 
-	let snare01 = document.getElementById('snare01');
-	snare01.addEventListener('click',function(){
-		wavesurfer.load('assets/audio/snare01.wav');
-		wavesurfer.play();
-		//filter.frequency.value +=400;
-	});
-});
-*/
+function playSampleByKeyTap(hand,finger){
+	let handType = hand.type;
+	let fingerType = finger.type;
+}
