@@ -1,15 +1,20 @@
-import * as soundManager from './soundManager';
-//import Leap from 'leapjs';
-//import * as leap_plugin from 'leapjs-plugins';
 import * as canvas from './canvas';
-import {coordTo2d,drawCircle} from './utils';
+import * as leap_plugin from 'leapjs-plugins';
+import mainmenu from './mainmenu';
+import Leap from 'leapjs';
+import $ from 'jquery';
 import onGesture from './gesture';
+import {coordTo2d,drawCircle} from './utils';
 
 let ctx = canvas.getCtx();
 
 let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	
 	canvas.clear();
+	
+	if (canvas.getState() == 'mainmenu') {
+		mainmenu.render();
+	}
 
 	let lastHandCoord;
 
@@ -18,6 +23,10 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 		let leapPoint = hand.stabilizedPalmPosition;
 		let coord = coordTo2d(frame,leapPoint);
 
+		if (canvas.getState() == 'mainmenu') {
+			mainmenu.buttonHover(coord);			
+		}
+		
 		drawCircle(ctx,coord,40,'black');
 
 		if (typeof lastHandCoord === 'object' && Math.abs(coord.x-lastHandCoord.x)<500){ 
@@ -51,7 +60,9 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 		lastHandCoord = coord;
 	});
 
-  if(frame.valid && frame.gestures.length > 0){
+
+
+  if(frame.valid && frame.gestures.length > 0 && canvas.getState() != 'mainmenu') {
   	onGesture(frame);
   }	
 

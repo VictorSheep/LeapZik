@@ -1,3 +1,5 @@
+import soundManager from './soundManager';
+
 export default function onGesTure(frame){
 
    frame.gestures.forEach((gesture)=>{
@@ -9,13 +11,11 @@ export default function onGesTure(frame){
 			    handIds.forEach((handId)=>{
 			    	hand = frame.hand(handId);
 			    });	    		
-			    console.log("keyTap",hand.type,hand.finger(fingersId).type);
+			    soundManager.playSampleByKeyTap(hand,hand.finger(fingersId));
 	            break;
 	        case "swipe":
-	    		console.log('swipe');
 	        	break;
 	        case 'nearPalm':
-	        	console.log('Near')
 	        	break;
 
 	    }
