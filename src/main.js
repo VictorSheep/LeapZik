@@ -1,6 +1,6 @@
 import * as soundManager from './soundManager';
-import Leap from 'leapjs';
-import * as leap_plugin from 'leapjs-plugins';
+//import Leap from 'leapjs';
+//import * as leap_plugin from 'leapjs-plugins';
 import * as canvas from './canvas';
 import {coordTo2d,drawCircle} from './utils';
 
