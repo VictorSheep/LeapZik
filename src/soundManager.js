@@ -51,7 +51,10 @@ function playSample(hand,finger){
 	}
 }
 
-function playSampleByKeyTap(hand,finger){
-	let handType = hand.type;
-	let fingerType = finger.type;
+function playSampleByKeyTap(handObj,fingerObj){
+	let hand = handObj.type;
+	let finger = fingerObj.type - 1;
+	if(finger<0) consol.log('Error: finger.type is too little');
+
+	playSample(hand,finger);
 }
