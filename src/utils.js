@@ -19,4 +19,11 @@ function drawCircle(ctx,coord,radius,color){
 	ctx.closePath();	
 }
 
-export {coordTo2d, drawCircle};
+function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
+
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
+}
+
+export {coordTo2d, drawCircle, sleep};
