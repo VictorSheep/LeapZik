@@ -15,6 +15,7 @@ export default class {
 		this.loadRadius = 0;
 		this.loadColor = 'rgba(60,90,130,1)';
 		this.isFull = ()=>{console.log('Pas de fonction définit')};
+		this.isHover = false;
 
 		if (typeof arg == 'object') {
 			for (let prop in arg){
@@ -40,11 +41,15 @@ export default class {
 		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
 
 		if (dist<this.radius && this.loadRadius < this.radius){
+			this.isHover = true;
 			this.loadRadius+=2.5;
 			if (this.loadRadius >= this.radius) this.isFull();
-		}else{
+		}else if (this.isHover === false){
 			this.loadRadius -= 10;
 			if (this.loadRadius<=0) this.loadRadius = 0;
+			this.isHover = false;
+		} else {
+			this.isHover = false;
 		}
 	}
 
