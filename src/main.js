@@ -6,6 +6,7 @@ import mainMenu from './mainmenu';
 import presetMenu from './presetMenu';
 import onGesture from './gesture';
 import {coordTo2d,drawCircle} from './utils';
+import sampleTrigger from './sampleTrigger'
 
 let ctx = canvas.getCtx();
 
@@ -16,8 +17,7 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	presetMenu.render()
 	
 	mainMenu.render();
-	
-  		
+
 	let lastHandCoord;
 	frame.hands.forEach((hand) => {
 
@@ -32,10 +32,18 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 
 			mainMenu.getAllButtons()[0].onHover(coord);
 
-		}else if(canvas.getState() == 'experience' && presetMenu.isActive()){
-			presetMenu.getAllButtons().forEach((button)=>{
-				button.onHover(coord);
-			});
+		}else if(canvas.getState() == 'experience'){
+			
+			if(presetMenu.isActive()){
+			
+				presetMenu.getAllButtons().forEach((button)=>{
+					button.onHover(coord);
+				});
+				
+			}
+
+			sampleTrigger.render();
+
 		}
 		
 		drawCircle(ctx,coord,40,'black');
@@ -50,6 +58,12 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 		}
 
 		hand.fingers.forEach((finger) => {
+			
+			let leapPoint = finger.stabilizedTipPosition;
+			let coord = coordTo2d(frame,leapPoint);
+			
+			sampleTrigger.isTap(coord,[hand,finger]);
+
 			ctx.beginPath();
 			finger.positions.forEach((position,index) =>{
 					

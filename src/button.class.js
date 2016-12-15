@@ -15,6 +15,7 @@ export default class {
 		this.loadRadius = 0;
 		this.loadColor = 'rgba(60,90,130,1)';
 		this.isFull = ()=>{console.log('Pas de fonction définit')};
+		this.onTap = ()=>{console.log('Pas de fonction définit')};
 		this.isHover = false;
 
 		if (typeof arg == 'object') {
@@ -36,6 +37,8 @@ export default class {
 		ctx.fillText(this.title,this.coord.x,this.coord.y);
 	}
 
+	getPreset(){ return this.preset };
+
 	onHover(coord){
 
 		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
@@ -53,5 +56,11 @@ export default class {
 		}
 	}
 
-	getPreset(){ return this.preset };
+	isTap(coord,tbl){
+		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
+
+		if (dist<this.radius && this.loadRadius < this.radius){
+			if(this['onTap']) this.onTap(tbl[0],tbl[1]);
+		}
+	}
 }
