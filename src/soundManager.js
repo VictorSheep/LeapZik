@@ -19,8 +19,8 @@ let sample = {
 
 window.onload = function () {
 	init();
-	loadSet('electric');
-	editFilterEq(1,1);
+	loadSet('aqua');
+	editFilterEq(1,0);
 }
 
 function init(){
@@ -91,6 +91,11 @@ function editFilterEq(frequency=0.2,Q=0){
 	frequency=frequency*10;
 	frequency=Math.exp(frequency);
 
+	let gain = 1/frequency;
+	gain = gain/(1/0.01)*1500+.9;
+
+	console.log(gain);
+
 	// frequency et Q à modifier en fonction d'une position
 	// gain(pour le peaking) à modifier en fct de frequency
 	bandpassEq.type = "bandpass";
@@ -100,16 +105,24 @@ function editFilterEq(frequency=0.2,Q=0){
 	peakingEq.frequency.value = frequency;
 	peakingEq.Q.value = Q;
 	peakingEq.gain.value = 6;
-	console.log(gainNode);
-	gainNode.gain.value = 50;
+
+	gainNode.gain.value = gain;
 }
 
 function editFilterEqByPosition(coord){
-	console.log(coord.y);
+	let y = coord.y;
+	let yMax = window.innerHeight;
+
+	let freq = y/yMax;
+	if(freq<=0) freq=0.01;
+
+	editFilterEq(freq,0.4);
+
 }
 
 export default {
 	playSampleByKeyTap : playSampleByKeyTap,
+	editFilterEqByPosition : editFilterEqByPosition,
 	playSample : playSample,
 	loadSet : loadSet,
 };

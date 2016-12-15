@@ -1,5 +1,6 @@
 import * as canvas from './canvas';
 import * as leap_plugin from 'leapjs-plugins';
+import soundManager from './soundManager';
 import mainmenu from './mainmenu';
 import Leap from 'leapjs';
 import $ from 'jquery';
@@ -22,7 +23,11 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 
 		let leapPoint = hand.stabilizedPalmPosition;
 		let coord = coordTo2d(frame,leapPoint);
-
+		
+		if(hand.type=='right'){
+			soundManager.editFilterEqByPosition(coord);
+		}
+		
 		if (canvas.getState() == 'mainmenu') {
 			mainmenu.buttonHover(coord);			
 		}
