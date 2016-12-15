@@ -1,4 +1,5 @@
-import soundManager from './soundManager';
+import soundManager from './soundManager.js';
+import menu from './presetMenu';
 
 export default function onGesTure(frame){
 
@@ -8,14 +9,17 @@ export default function onGesTure(frame){
 			    let handIds = gesture.handIds;
 			    let fingersId = gesture.pointableIds;
 			    let hand;
+			    
 			    handIds.forEach((handId)=>{
 			    	hand = frame.hand(handId);
-			    });	    		
+			    });	 
+
 			    soundManager.playSampleByKeyTap(hand,hand.finger(fingersId));
 	            break;
 	        case "swipe":
 	        	break;
 	        case 'nearPalm':
+	        	menu.actived();
 	        	break;
 
 	    }

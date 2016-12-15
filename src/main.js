@@ -1,8 +1,8 @@
 import * as canvas from './canvas';
 import * as leap_plugin from 'leapjs-plugins';
-import mainmenu from './mainmenu';
 import Leap from 'leapjs';
-import $ from 'jquery';
+import mainMenu from './mainmenu';
+import presetMenu from './presetMenu';
 import onGesture from './gesture';
 import {coordTo2d,drawCircle} from './utils';
 
@@ -11,25 +11,31 @@ let ctx = canvas.getCtx();
 let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	
 	canvas.clear();
+
+	presetMenu.render()
 	
-	if (canvas.getState() == 'mainmenu') {
-		mainmenu.render();
-	}
-
+	mainMenu.render();
+	
+  		
 	let lastHandCoord;
-
 	frame.hands.forEach((hand) => {
 
 		let leapPoint = hand.stabilizedPalmPosition;
 		let coord = coordTo2d(frame,leapPoint);
 
 		if (canvas.getState() == 'mainmenu') {
-			mainmenu.buttonHover(coord);			
+
+			mainMenu.getAllButtons()[0].onHover(coord);
+
+		}else if(canvas.getState() == 'experience' && presetMenu.isActive()){
+			presetMenu.getAllButtons().forEach((button)=>{
+				button.onHover(coord);
+			});
 		}
 		
 		drawCircle(ctx,coord,40,'black');
 
-		if (typeof lastHandCoord === 'object' && Math.abs(coord.x-lastHandCoord.x)<500){ 
+		if (typeof lastHandCoord === 'object' && Math.abs(coord.x-lastHandCoord.x)<350){ 
 			frame.gestures.push(
 				{
 					type : 'nearPalm',
