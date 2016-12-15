@@ -24,7 +24,9 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
-    "leapjs": "^0.6.4"
+    "jquery": "^3.1.1",
+    "leapjs": "^0.6.4",
+    "leapjs-plugins": "^0.1.12"
   },
   "repository": {
     "type": "git",
