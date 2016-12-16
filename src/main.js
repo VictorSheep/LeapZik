@@ -18,31 +18,38 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	
 	mainMenu.render();
 
+	if (canvas.getState() == 'experience') sampleTrigger.render();
+
+
 	let lastHandCoord;
 	frame.hands.forEach((hand) => {
 
 		let leapPoint = hand.stabilizedPalmPosition;
 		let coord = coordTo2d(frame,leapPoint);
 		
-		if(hand.type=='right'){
-			soundManager.editFilterEqByPosition(coord);
-		}
-		
 		if (canvas.getState() == 'mainmenu') {
 
-			mainMenu.getAllButtons()[0].onHover(coord);
+			mainMenu.getButton(0).onHover(coord,()=>{
+				mainMenu.desactived();
+				canvas.changeState('experience');
+			});
 
 		}else if(canvas.getState() == 'experience'){
 			
 			if(presetMenu.isActive()){
 			
 				presetMenu.getAllButtons().forEach((button)=>{
-					button.onHover(coord);
+					button.onHover(coord,()=>{
+						soundManager.loadSet(button.getSet());
+						presetMenu.desactived();
+					});
 				});
-				
+
 			}
 
-			sampleTrigger.render();
+			if(hand.type=='right'){
+				soundManager.editFilterEqByPosition(coord);
+			};				
 
 		}
 		
@@ -62,7 +69,11 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 			let leapPoint = finger.stabilizedTipPosition;
 			let coord = coordTo2d(frame,leapPoint);
 			
-			sampleTrigger.isTap(coord,[hand,finger]);
+			if (canvas.getState() == 'experience'){
+				sampleTrigger.onTap(coord,()=>{
+					soundManager.playSampleByKeyTap(hand,finger);
+				});
+			}
 
 			ctx.beginPath();
 			finger.positions.forEach((position,index) =>{

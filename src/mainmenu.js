@@ -7,7 +7,6 @@ let mainMenu = new Menu();
 let commencer = new Button({
 	title : 'Commencer',
 	radius : 250,
-	isFull : () => {mainMenu.desactived();canvas.changeState('experience')}
 })
 
 

@@ -14,9 +14,11 @@ export default class {
 		this.color = 'rgba(0,0,0,.8)';
 		this.loadRadius = 0;
 		this.loadColor = 'rgba(60,90,130,1)';
-		this.isFull = ()=>{console.log('Pas de fonction définit')};
-		this.onTap = ()=>{console.log('Pas de fonction définit')};
+		this.border = true;
+		this.borderSize = 2;
+		this.borderColor = 'rgba(255,255,255,1)';
 		this.isHover = false;
+		this.isTap = false;
 
 		if (typeof arg == 'object') {
 			for (let prop in arg){
@@ -27,6 +29,8 @@ export default class {
 	}
 
 	render(){
+		
+		if (this.border) utils.drawCircle(ctx,this.coord,this.radius+this.borderSize,this.borderColor); 		
 		
 		utils.drawCircle(ctx,this.coord,this.loadRadius,this.loadColor)
 		utils.drawCircle(ctx,this.coord,this.radius,this.color)
@@ -39,14 +43,14 @@ export default class {
 
 	getPreset(){ return this.preset };
 
-	onHover(coord){
+	onHover(coord,callback){
 
 		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
 
 		if (dist<this.radius && this.loadRadius < this.radius){
 			this.isHover = true;
 			this.loadRadius+=2.5;
-			if (this.loadRadius >= this.radius) this.isFull();
+			if (this.loadRadius >= this.radius) callback();
 		}else if (this.isHover === false){
 			this.loadRadius -= 10;
 			if (this.loadRadius<=0) this.loadRadius = 0;
@@ -56,11 +60,19 @@ export default class {
 		}
 	}
 
-	isTap(coord,tbl){
+	onTap(coord,callback){
+		if(typeof callback != 'function') return;
 		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
 
-		if (dist<this.radius && this.loadRadius < this.radius){
-			if(this['onTap']) this.onTap(tbl[0],tbl[1]);
+		if (dist<this.radius && this.loadRadius < this.radius && !this.isTap){
+			this.isTap = true;
+			
+			setTimeout(()=>{
+				this.isTap = false
+			},300);
+
+			callback();
 		}
+
 	}
 }
