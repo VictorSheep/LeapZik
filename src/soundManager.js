@@ -10,8 +10,10 @@ var bandpassEq = context.createBiquadFilter();
 var peakingEq = context.createBiquadFilter();
 var gainNode = context.createGain();
 
-
+// déclaration d'une variable bufferLoader (pour load une liste de buffer facilement)
 let bufferLoader;
+
+// liste des sample utiliable (trié par main:doigts)
 let sample = {
 	right	: [],
 	left	: []
@@ -21,15 +23,17 @@ let sampleState = {
 	left	: []
 };
 
+
 window.onload = function () {
-	init();
 	loadSet('aqua');
 	editFilterEq(1,0);
 }
 
-function init(){
-}
-
+/**
+ * LoadSet: Charge le set d'ambiance 'set'
+ * @param  {String} set [nom du set d'ambiance]
+ * @return {nothing}
+ */
 function loadSet(set){
 	let samplesPathList = [];
 	for (var i = 0; i < 8; i++) {
@@ -44,6 +48,10 @@ function loadSet(set){
 	bufferLoader.load();
 }
 
+/**
+ * finishedLoading: fonction de callback de leadSet
+ * @param  {[type]} bufferList
+ */
 function finishedLoading(bufferList) {
 	// Créé plusieur sources puis en joue une
 	let src;
@@ -59,6 +67,13 @@ function finishedLoading(bufferList) {
 
 }
 
+/**
+ * playSample: Joue un son correspondant à un doigt
+ * 
+ * @param  {string} hand   [la main: 'right' ou 'left']
+ * @param  {int} 	finger [numero du doigt (de 1 à 4)]
+ * @return {nothing}
+ */
 function playSample(hand,finger){
 
 	// creation de la source
@@ -83,6 +98,12 @@ function playSample(hand,finger){
 	source.start(0);
 }
 
+/**
+ * setSampleState: change l'Etat d'un sample
+ * @param  {string} hand   [la main: 'right' ou 'left']
+ * @param  {int} 	finger [numero du doigt (de 1 à 4)]
+ * @param  {bool} 	state  [etat]
+ */
 function setSampleState(hand,finger,state){
 
 	switch(hand)
@@ -96,6 +117,12 @@ function setSampleState(hand,finger,state){
 	}
 }
 
+/**
+ * getSampleState: récupère l'état d'un sample (pour savoir si on peut le jouer ou non)
+ * @param  {string} hand   [la main: 'right' ou 'left']
+ * @param  {int} 	finger [numero du doigt (de 1 à 4)]
+ * @return {state}  l'état sample
+ */
 function getSampleState(hand,finger){
 	switch(hand)
 	{
@@ -108,26 +135,42 @@ function getSampleState(hand,finger){
 	}
 }
 
+/**
+ * playSampleByFinger: Joue un son en fonction du doigt
+ * @param  {hand} 	handObj   [instance de hand (du leapMotion)]
+ * @param  {finger} fingerObj [instance de finger (du leapMotion)]
+ * @return {nothing}
+ */
 function playSampleByFinger(handObj,fingerObj){
 	let hand = handObj.type;
 	let finger = fingerObj.type - 1;
 	if(finger<0){
-		console.log('Error: finger.type is too little');
 	}else{
 		if(!getSampleState(hand,finger)) playSample(hand,finger);
 	}
 }
 
+/**
+ * setSampleStateByFinger
+ * @param  {hand} 	handObj   [instance de hand (du leapMotion)]
+ * @param  {finger} fingerObj [instance de finger (du leapMotion)]
+ * @param  {state} 	state      [état]
+ */
 function setSampleStateByFinger(handObj,fingerObj,state){
 	let hand = handObj.type;
 	let finger = fingerObj.type - 1;
 	if(finger<0){
-		console.log('Error: finger.type is too little');
 	}else{
 		setSampleState(hand,finger,state);
 	}
 }
 
+/**
+ * editFilterEq: Modifie le filtre de fréquence
+ * @param  {float} frequency [de 0 à 10]
+ * @param  {float} Q         [de 0 à 6]
+ * @return {nothing}
+ */
 function editFilterEq(frequency=0.2,Q=0){
 
 	frequency=frequency*10;
@@ -149,6 +192,11 @@ function editFilterEq(frequency=0.2,Q=0){
 	gainNode.gain.value = gain;
 }
 
+/**
+ * editFilterEqByPosition: Modifie le filtre de fréquence en fonction de la position de la main
+ * @param  {table} coord  [les coordonnés {x,y} de la main]
+ * @return {nothing}
+ */
 function editFilterEqByPosition(coord){
 	let y = coord.y;
 	let yMax = window.innerHeight;
