@@ -65,6 +65,7 @@ export default class {
 		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
 
 		if (dist<this.radius && this.loadRadius < this.radius && !this.isTap){
+			
 			this.isTap = true;
 			
 			setTimeout(()=>{
