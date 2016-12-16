@@ -132,8 +132,8 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	});
 
 
-  if (canvas.getState() == 'experience') {
-  	if (guide.etat>=guide.message.length) return;
+  if (canvas.getState() == 'experience' && guide.etat<guide.message.length) {
+
   	guideText.color = '#B377D7';
   	guideText.content = guide.message[guide.etat];
   	guideText.render();

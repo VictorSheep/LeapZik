@@ -7,10 +7,12 @@ export default function onGesTure(frame){
    frame.gestures.forEach((gesture)=>{
 	    switch (gesture.type){
 	        case 'nearPalm':
+	        	
 	        	menu.actived();
+
 	        	if(guide.etat == 4){
 	        		guide.etat++
-	        		setTimeout(function() {guide.etat++}, 5000);
+	        		setTimeout(() =>{guide.etat++}, 5000);
 	        	};
 	        	break;
 
