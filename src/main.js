@@ -72,6 +72,11 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 			if (canvas.getState() == 'experience'){
 				sampleTrigger.onTap(coord,()=>{
 					soundManager.playSampleByFinger(hand,finger);
+					soundManager.setSampleStateByFinger(hand,finger,true);
+					console.log('Dedans');
+				}, ()=>{
+					soundManager.setSampleStateByFinger(hand,finger,false);
+					console.log('Hors');
 				});
 			}
 

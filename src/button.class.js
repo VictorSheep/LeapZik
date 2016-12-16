@@ -60,20 +60,14 @@ export default class {
 		}
 	}
 
-	onTap(coord,callback){
+	onTap(coord,callback,callbakck2){
 		if(typeof callback != 'function') return;
 		let dist = Math.sqrt(Math.pow(coord.x-this.coord.x,2)+Math.pow(coord.y-this.coord.y,2));
 
-		if (dist<this.radius && this.loadRadius < this.radius && !this.isTap){
-			
-			this.isTap = true;
-			
-			setTimeout(()=>{
-				this.isTap = false
-			},300);
-
+		if (dist<this.radius && this.loadRadius < this.radius){
 			callback();
+		}else{
+			if(callbakck2) callbakck2();
 		}
-
 	}
 }
