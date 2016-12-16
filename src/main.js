@@ -64,36 +64,42 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 			);
 		}
 
-		hand.fingers.forEach((finger) => {
+		hand.fingers.forEach((finger,index) => {
 			
 			let leapPoint = finger.stabilizedTipPosition;
 			let coord = coordTo2d(frame,leapPoint);
-			
+
+			let colors = ['#100A28','#B377D7','#461F72','#8437A7','#16143F'];
+			let color = colors[index%colors.length];
+
 			if (canvas.getState() == 'experience'){
 				sampleTrigger.onTap(coord,()=>{
+					let coord = sampleTrigger.getCoord();
+					let radius = sampleTrigger.getRadius();
+					console.log(radius);
 					soundManager.playSampleByFinger(hand,finger);
+					if (!soundManager.getSampleState(hand,finger)) {
+						drawCircle(ctx,coord,radius,color);
+					}
 					soundManager.setSampleStateByFinger(hand,finger,true);
-					console.log('Dedans');
 				}, ()=>{
 					soundManager.setSampleStateByFinger(hand,finger,false);
-					console.log('Hors');
 				});
 			}
 
 			ctx.beginPath();
-			finger.positions.forEach((position,index) =>{
-					
-				let colors = ['green','red','blue','orange','brown'];
+
+
+			finger.positions.forEach((position) =>{
+				
 				let coord = coordTo2d(frame,position);
 					
 				ctx.lineTo(coord.x,coord.y);
 				ctx.stroke();	
 				ctx.closePath();
 
-				let color = colors[index%colors.length];
 
 				drawCircle(ctx,coord,15,color);
-
 			});
 					
 		});

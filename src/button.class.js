@@ -41,7 +41,9 @@ export default class {
 		ctx.fillText(this.title,this.coord.x,this.coord.y);
 	}
 
-	getPreset(){ return this.preset };
+	getPreset(){ return this.preset; };
+	getCoord(){ return this.coord; };
+	getRadius(){ return this.radius; };
 
 	onHover(coord,callback){
 

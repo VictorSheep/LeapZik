@@ -89,11 +89,9 @@ function setSampleState(hand,finger,state){
 	{
 		case 'left':
 			sampleState.left[finger]=state;
-			console.log(sampleState.left[finger]);
 			break;
 		case 'right':
 			sampleState.right[finger]=state;
-			console.log(sampleState.right[finger]);
 			break;
 	}
 }
@@ -163,6 +161,7 @@ function editFilterEqByPosition(coord){
 
 export default {
 	playSampleByFinger : playSampleByFinger,
+	getSampleState : getSampleState,
 	setSampleStateByFinger : setSampleStateByFinger,
 	editFilterEqByPosition : editFilterEqByPosition,
 	playSample : playSample,
