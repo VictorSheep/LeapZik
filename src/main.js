@@ -5,22 +5,30 @@ import Leap from 'leapjs';
 import mainMenu from './mainmenu';
 import presetMenu from './presetMenu';
 import onGesture from './gesture';
+import Texte from './text.class';
 import {coordTo2d,drawCircle} from './utils';
 import sampleTrigger from './sampleTrigger'
 
 let ctx = canvas.getCtx();
 
+let titre = new Texte();
+
+titre.coord.y = 75;
+
+console.log(titre);
 let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	
+
 	canvas.clear();
 
 	presetMenu.render()
 	
 	mainMenu.render();
-
+	
 	if (canvas.getState() == 'experience') sampleTrigger.render();
-
-
+	
+	if (canvas.getState() == 'mainmenu') titre.render();
+	
 	let lastHandCoord;
 	frame.hands.forEach((hand) => {
 

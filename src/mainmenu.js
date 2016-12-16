@@ -7,9 +7,11 @@ let mainMenu = new Menu();
 let commencer = new Button({
 	title : 'Commencer',
 	radius : 250,
-})
+});
 
-
+commencer.blink = true;
+commencer.coord.y += 50;
+commencer.coordTitle.y += 50;
 
 mainMenu.addButtons([commencer]);
 
