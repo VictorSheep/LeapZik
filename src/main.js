@@ -7,8 +7,8 @@ import presetMenu from './presetMenu';
 import onGesture from './gesture';
 import guide from './guide';
 import Texte from './text.class';
-import {coordTo2d,drawCircle} from './utils';
 import sampleTrigger from './sampleTrigger'
+import {coordTo2d,drawCircle} from './utils';
 
 let ctx = canvas.getCtx();
 
@@ -21,35 +21,39 @@ let guideText = new Texte();
 guideText.coord.y = window.innerHeight/2;
 guideText.size = '2em';
 
+/*Boucle du Leap Motion*/
 let controller = Leap.loop({enableGestures: true}, (frame)=>{
-	
+	/*On efface le canvas*/
 	canvas.clear();
-
+	/*On dessine le menu des set d'ambiance*/
 	presetMenu.render()
-	
+	/*On dessine le menu principale*/
 	mainMenu.render();
-	
+	/*Dessine le bouton permettant de jouer un jeu si nous somme dans la bonne State*/
 	if (canvas.getState() == 'experience') sampleTrigger.render();
-	
+	/*On dessine le titre de la WebApp si on est dans le menu principale*/
 	if (canvas.getState() == 'mainmenu') titre.render();
 	
+	/*Garde en memoire les donnée de la main precedente*/
 	let lastHandCoord;
+
+	/*Boucle pour chaque main*/
 	frame.hands.forEach((hand) => {
 
 		let leapPoint = hand.stabilizedPalmPosition;
 		let coord = coordTo2d(frame,leapPoint);
 		
 		if (canvas.getState() == 'mainmenu') {
-
+			/*Desactive et change la State de la Web App en callback de l'event Hover du bouton*/
 			mainMenu.getButton(0).onHover(coord,()=>{
 				mainMenu.desactived();
 				canvas.changeState('experience');
 			});
 
 		}else if(canvas.getState() == 'experience'){
-			
+			/*Si le menu des ambiances est activée*/
 			if(presetMenu.isActive()){
-			
+				/*Pour chaque bouton, on verifie l'etat hover du boutton et et execute le callback*/
 				presetMenu.getAllButtons().forEach((button)=>{
 					button.onHover(coord,()=>{
 						soundManager.loadSet(button.getSet());
@@ -59,7 +63,9 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 
 			}
 
+
 			if(hand.type=='right'){
+				/*Permet de modifier le filtre en fonction de la position de la main droite*/
 				soundManager.editFilterEqByPosition(coord);
 			};				
 
