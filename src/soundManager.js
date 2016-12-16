@@ -16,6 +16,10 @@ let sample = {
 	right	: [],
 	left	: []
 };
+let sampleState = {
+	right	: [],
+	left	: []
+};
 
 window.onload = function () {
 	init();
@@ -79,11 +83,49 @@ function playSample(hand,finger){
 	source.start(0);
 }
 
+function setSampleState(hand,finger,state){
+
+	switch(hand)
+	{
+		case 'left':
+			sampleState.left[finger]=state;
+			break;
+		case 'right':
+			sampleState.right[finger]=state;
+			break;
+	}
+}
+
+function getSampleState(hand,finger){
+	switch(hand)
+	{
+		case 'left':
+			return sampleState.left[finger];
+			break;
+		case 'right':
+			return sampleState.right[finger];
+			break;
+	}
+}
+
 function playSampleByFinger(handObj,fingerObj){
 	let hand = handObj.type;
 	let finger = fingerObj.type - 1;
-	if(finger<0) console.log('Error: finger.type is too little');
-	else playSample(hand,finger);
+	if(finger<0){
+		console.log('Error: finger.type is too little');
+	}else{
+		if(!getSampleState(hand,finger)) playSample(hand,finger);
+	}
+}
+
+function setSampleStateByFinger(handObj,fingerObj,state){
+	let hand = handObj.type;
+	let finger = fingerObj.type - 1;
+	if(finger<0){
+		console.log('Error: finger.type is too little');
+	}else{
+		setSampleState(hand,finger,state);
+	}
 }
 
 function editFilterEq(frequency=0.2,Q=0){
@@ -115,11 +157,12 @@ function editFilterEqByPosition(coord){
 	if(freq<=0) freq=0.01;
 
 	editFilterEq(freq,0.4);
-
 }
 
 export default {
 	playSampleByFinger : playSampleByFinger,
+	getSampleState : getSampleState,
+	setSampleStateByFinger : setSampleStateByFinger,
 	editFilterEqByPosition : editFilterEqByPosition,
 	playSample : playSample,
 	loadSet : loadSet,

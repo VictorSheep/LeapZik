@@ -3,6 +3,7 @@ import Button from './button.class';
 let sampleTrigger = new Button({
 	title : 'Touche avec un doigt',
 	radius : 400,
+	color : '#121E22'
 })
 
 sampleTrigger.blink = true;

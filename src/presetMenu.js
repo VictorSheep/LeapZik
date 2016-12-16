@@ -6,7 +6,7 @@ let electric = new Button({
 	radius : 60,
 });
 
-electric.set = 'electric';
+electric.set = 'electricbis';
 electric.getSet = function(){return this.set;};
 
 electric.coord.y = electric.radius+10;
