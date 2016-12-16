@@ -94,8 +94,6 @@ function editFilterEq(frequency=0.2,Q=0){
 	let gain = 1/frequency;
 	gain = gain/(1/0.01)*1500+.9;
 
-	console.log(gain);
-
 	// frequency et Q à modifier en fonction d'une position
 	// gain(pour le peaking) à modifier en fct de frequency
 	bandpassEq.type = "bandpass";
@@ -121,7 +119,7 @@ function editFilterEqByPosition(coord){
 }
 
 export default {
-	playSampleByKeyTap : playSampleByKeyTap,
+	playSampleByFinger : playSampleByFinger,
 	editFilterEqByPosition : editFilterEqByPosition,
 	playSample : playSample,
 	loadSet : loadSet,

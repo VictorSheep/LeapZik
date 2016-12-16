@@ -3,6 +3,7 @@ import Button from './button.class';
 
 let electric = new Button({
 	title : 'Electric',
+	radius : 60,
 });
 
 electric.set = 'electric';
@@ -12,27 +13,29 @@ electric.coord.y = electric.radius+10;
 
 let aqua = new Button({
 	title : 'Aqua',
+	radius : 60,
 });
 
 aqua.set = 'aqua';
 aqua.getSet = function(){return this.set;};
 
-aqua.coord.x -= aqua.radius*2+50;
+aqua.coord.x = (electric.coord.x-electric.radius)-75;
 aqua.coord.y = electric.coord.y;
 
 let sandman = new Button({
-	title : 'Sandman',
+	title : 'Sand',
+	radius : 60,
 });
 
 sandman.set = 'sandman';
 sandman.getSet = function(){return this.set;};
 
-sandman.coord.x -= aqua.coord.x+50;
+sandman.coord.x = (electric.coord.x+electric.radius)+75;
 sandman.coord.y = electric.coord.y;
 
 
 let presetMenu = new Menu();
 
-presetMenu.addButtons([aqua,electric]);
+presetMenu.addButtons([aqua,electric,sandman]);
 
 export default presetMenu;
