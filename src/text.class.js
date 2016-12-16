@@ -21,8 +21,11 @@ export default class{
 
 	}
 
-	render(){		
-		ctx.fillStyle = 'rgba('+this.color[0]+','+this.color[1]+','+this.color[2]+','+this.alpha+')';
+	render(){	
+
+		if (typeof this.color == 'string') ctx.fillStyle = this.color;	
+		else ctx.fillStyle = 'rgba('+this.color[0]+','+this.color[1]+','+this.color[2]+','+this.alpha+')';
+
 		ctx.font = this.size+" calibri light";
 		ctx.textAlign = "center"; 		
 		ctx.fillText(this.content,this.coord.x,this.coord.y);

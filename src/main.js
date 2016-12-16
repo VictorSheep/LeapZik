@@ -5,6 +5,7 @@ import Leap from 'leapjs';
 import mainMenu from './mainmenu';
 import presetMenu from './presetMenu';
 import onGesture from './gesture';
+import guide from './guide';
 import Texte from './text.class';
 import {coordTo2d,drawCircle} from './utils';
 import sampleTrigger from './sampleTrigger'
@@ -15,10 +16,13 @@ let titre = new Texte();
 
 titre.coord.y = 75;
 
-console.log(titre);
+let guideText = new Texte();
+
+guideText.coord.y = window.innerHeight/2;
+guideText.size = '2em';
+
 let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	
-
 	canvas.clear();
 
 	presetMenu.render()
@@ -77,7 +81,7 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 			let leapPoint = finger.stabilizedTipPosition;
 			let coord = coordTo2d(frame,leapPoint);
 
-			let colors = ['#100A28','#B377D7','#461F72','#8437A7','#16143F'];
+			let colors = ['#100A28','#16143F','#461F72','#8437A7','#B377D7'];
 			let color = colors[index%colors.length];
 
 			if (canvas.getState() == 'experience'){
@@ -90,6 +94,18 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 						drawCircle(ctx,coord,radius,color);
 					}
 					soundManager.setSampleStateByFinger(hand,finger,true);
+					if (guide.etat == 0) {
+						guide.etat++;
+						setTimeout(()=>{
+							guide.etat++;
+							setTimeout(()=>{
+								guide.etat++;
+								setTimeout(()=>{
+									guide.etat++;
+								},5000)
+							},10000)
+						},5000)
+					}
 				}, ()=>{
 					soundManager.setSampleStateByFinger(hand,finger,false);
 				});
@@ -116,9 +132,16 @@ let controller = Leap.loop({enableGestures: true}, (frame)=>{
 	});
 
 
+  if (canvas.getState() == 'experience') {
+  	if (guide.etat>=guide.message.length) return;
+  	guideText.color = '#B377D7';
+  	guideText.content = guide.message[guide.etat];
+  	guideText.render();
+  }
 
   if(frame.valid && frame.gestures.length > 0 && canvas.getState() != 'mainmenu') {
   	onGesture(frame);
   }	
+
 
 });
