@@ -4,7 +4,7 @@
   "description": "Projet étudiant 2016 a l'Ecole Multimedia WebApp musical",
   "main": "main.js",
   "scripts": {
-    "dev": "webpack-dev-server --watch --hot --inline --colors -d",
+    "dev": "webpack-dev-server --host --watch --hot --inline --colors -d",
     "build": "webpack --production"
   },
   "contributors": [
